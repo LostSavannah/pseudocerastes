@@ -1,0 +1,14 @@
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-01
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          echo ${{ secrets.PYPI_UPLOAD_PSEUDOCERASTES_TWINE_TOKEN }} > token.txt

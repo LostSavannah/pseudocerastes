@@ -1,0 +1,1 @@
+twine -u __token__ -p %PYPI_UPLOAD_PSEUDOCERASTES_TWINE_TOKEN% upload dist/*
