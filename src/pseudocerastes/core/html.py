@@ -24,7 +24,7 @@ class HtmlNode:
             if i in self.children:
                 children.append(self.children[i].get_dom())
             else:
-                children.append(self.children[i])
+                children.append(self.text[i])
         return {
             "tag": self.tag,
             "attrs": self.attrs,
