@@ -9,7 +9,7 @@ setuptools.setup(
     version=readfile('version.txt'),
     author="Erick Fernando Mora Ramirez",
     author_email="erickfernandomoraramirez@gmail.com",
-    description="A simple html scraping tool",
+    description="A simple html parsing tool",
     long_description=readfile('README.md'),
     long_description_content_type="text/markdown",
     url="https://github.com/LostSavannah/pseudocerastes",

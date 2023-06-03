@@ -1,51 +1,32 @@
-import json
+from typing import Any
 
 class HtmlNode:
-    def __init__(self, tag:str) -> None:
+    def __init__(self, tag:str, attrs:list[tuple[str, str | None]]) -> None:
+        self.index:int = 0
         self.tag = tag
-        self.attributes = {}
-        self.children = []
-        self.text = {}
-        self.itemsIndex = 0
+        self.attrs: dict[str, str | None] = dict()
+        self.children: dict[int, Any] = dict()
+        self.text: dict[int, str] = dict()
+        for i in attrs:
+            self.attrs[i[0]] = i[1]
 
-    def add_child(self, child):
-        self.children.insert(0, child)
-        self.itemsIndex += 1
+    def add_child(self, child:Any):
+        self.children[self.index] = child
+        self.index += 1
 
-    def add_text(self, text):
-        self.text[self.itemsIndex] = text
-        self.itemsIndex += 1
+    def add_text(self, text:str):
+        self.text[self.index] = text
+        self.index += 1
 
     def get_dom(self):
+        children = []
+        for i in range(self.index):
+            if i in self.children:
+                children.append(self.children[i].get_dom())
+            else:
+                children.append(self.children[i])
         return {
             "tag": self.tag,
-            "attributes": {i:self.attributes[i] for i in self.attributes},
-            "text": {i:self.text[i] for i in self.text},
-            "children":[i.get_dom() for i in self.children]
+            "attrs": self.attrs,
+            "children": children
         }
-    
-    def get_dom_as_json(self):
-        return json.dumps(self.get_dom(), indent='\t')
-    
-    def as_html(self, tab_level:int = 0):
-        data = ('\t'*tab_level) + f'<{self.tag}'
-        attrs = [(i if not self.attributes[i] else f'{i}="{self.attributes[i]}"') for i in self.attributes]
-        attrs_string = ''.join([f" {i}" for i in attrs])
-        data += attrs_string
-        if self.itemsIndex > 0:
-            data += '>\n'
-            for i in range(self.itemsIndex):
-                if i in self.text:
-                    data += self.text[i] + '\n'
-                else:
-                    data += self.children.pop().as_html(tab_level + 1)
-            data += f'</{self.tag}>'
-        else:
-            data += '/>\n'
-        return data
-    
-    def walk(self):
-        yield self
-        for child in self.children:
-            for sub_child in child.walk():
-                yield sub_child

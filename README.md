@@ -1,5 +1,5 @@
 # Pseudocerastes
 
-_"A simple html scraping tool"_
+_"A simple html parsing tool"_
 
 That's it.
