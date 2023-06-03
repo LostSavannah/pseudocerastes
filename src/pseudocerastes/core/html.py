@@ -30,3 +30,9 @@ class HtmlNode:
             "attrs": self.attrs,
             "children": children
         }
+    
+    def walk(self) -> list["HtmlNode"]:
+        yield self
+        for i in self.children:
+            for child in self.children[i].walk():
+                yield child
